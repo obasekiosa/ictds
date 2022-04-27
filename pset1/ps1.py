@@ -55,7 +55,29 @@ def greedy_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
+    sortedKeys = sorted([[k, v] for k, v in cows.items()], key=lambda x: x[1], reverse=True)
+
+    output = []
+
+    completed = 0
+
+    while completed < len(sortedKeys):
+        size = 0
+        trip = []
+        completed = 0
+        for cow in sortedKeys:
+            if cow[1] is None:
+                completed += 1
+                continue
+            elif cow[1] + size <= limit:
+                trip.append(cow[0])
+                size += cow[1]
+                cow[1] = None
+            elif cow[1] > limit:
+                cow[1] = None
+
+        output.append(trip)
+    return output
 
 
 # Problem 2
