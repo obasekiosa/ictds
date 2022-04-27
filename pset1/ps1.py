@@ -75,8 +75,8 @@ def greedy_cow_transport(cows,limit=10):
                 cow[1] = None
             elif cow[1] > limit:
                 cow[1] = None
-
-        output.append(trip)
+        if len(trip) > 0:
+            output.append(trip)
     return output
 
 
