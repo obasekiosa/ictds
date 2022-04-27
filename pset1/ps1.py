@@ -143,7 +143,12 @@ def compare_cow_transport_algorithms():
     Does not return anything.
     """
     # TODO: Your code here
-    pass
+    cows = load_cows("ps1_cow_data.txt")
+    greedy = greedy_cow_transport(cows)
+    brute = brute_force_cow_transport(cows)
+    print(greedy)
+    print(brute)
+    print(f"greedy took {len(greedy)} trips while brute took {len(brute)} trips")
 
 
 """
@@ -152,11 +157,13 @@ Do not submit this along with any of your answers. Uncomment the last two
 lines to print the result of your problem.
 """
 
-cows = load_cows("ps1_cow_data.txt")
-limit=100
-print(cows)
+# cows = load_cows("ps1_cow_data.txt")
+# limit=100
+# print(cows)
 
-print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+# print(greedy_cow_transport(cows, limit))
+# print(brute_force_cow_transport(cows, limit))
+
+compare_cow_transport_algorithms()
 
 
