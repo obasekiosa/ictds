@@ -102,7 +102,30 @@ def brute_force_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
+    cowNames = [k for k, _ in cows.items()]
+    
+    best_partition = None
+
+    for partition in get_partitions(cowNames):
+        canBeTransported = True
+        for trip in partition:
+            totalSize = 0
+            for cow in trip:
+                totalSize += cows[cow]
+                if totalSize > limit:
+                    break
+            if totalSize > limit:
+                canBeTransported = False
+                break
+        
+        if canBeTransported:
+            if best_partition is None or len(best_partition) > len(partition):
+                best_partition = partition
+    
+    return best_partition
+
+        
+
 
         
 # Problem 3
