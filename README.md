@@ -1,4 +1,4 @@
-# Introduction to Computational Thinking and Data Science
+# Computational Optimizations and Modelling
 
 
 ### pset1
