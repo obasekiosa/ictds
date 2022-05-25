@@ -152,10 +152,11 @@ class Patient(object):
 
         survivors = [virus for virus in self.viruses if not virus.doesClear()]
 
-        pop_density = len(survivors) / self.maxPop
-        for virus in survivors:
+        num_survivors = len(survivors)
+        pop_density = num_survivors / self.maxPop
+        for index in range(num_survivors):
             try:
-                offspring = virus.reproduce(pop_density)
+                offspring = survivors[index].reproduce(pop_density)
                 survivors.append(offspring)
             except NoChildException as e:
                 continue
@@ -303,7 +304,12 @@ class ResistantVirus(SimpleVirus):
         NoChildException if this virus particle does not reproduce.
         """
 
-        # TODO
+        if all((self.isResistantTo(drug) for drug in activeDrugs)) and random.random() < self.maxBirthProb * (1 - popDensity):
+            resistances = {k: (not v if random.random() < self.mutProb else v) for k, v in self.resistances.items()}
+            return ResistantVirus(self.maxBirthProb, self.clearProb, resistances, self.mutProb)
+        else:
+            raise NoChildException
+
 
             
 
@@ -325,7 +331,8 @@ class TreatedPatient(Patient):
         maxPop: The  maximum virus population for this patient (an integer)
         """
 
-        # TODO
+        super().__init__(viruses, maxPop)
+        self.activeDrugs = set()
 
 
     def addPrescription(self, newDrug):
@@ -339,7 +346,7 @@ class TreatedPatient(Patient):
         postcondition: The list of drugs being administered to a patient is updated
         """
 
-        # TODO
+        self.activeDrugs.add(newDrug)
 
 
     def getPrescriptions(self):
@@ -350,7 +357,7 @@ class TreatedPatient(Patient):
         patient.
         """
 
-        # TODO
+        return list(self.activeDrugs)
 
 
     def getResistPop(self, drugResist):
@@ -364,9 +371,7 @@ class TreatedPatient(Patient):
         returns: The population of viruses (an integer) with resistances to all
         drugs in the drugResist list.
         """
-
-        # TODO
-
+        return sum((1 for virus in self.viruses if all((virus.isResistantTo(drug) for drug in drugResist))))
 
     def update(self):
         """
@@ -389,7 +394,21 @@ class TreatedPatient(Patient):
         integer)
         """
 
-        # TODO
+        survivors = [virus for virus in self.viruses if not virus.doesClear()]
+
+        num_survivors = len(survivors)
+        pop_density = num_survivors / self.maxPop
+
+        for index in range(num_survivors):
+            try:
+                offspring = survivors[index].reproduce(pop_density, self.activeDrugs)
+                survivors.append(offspring)
+            except NoChildException as e:
+                continue
+
+        self.viruses = survivors
+        return len(survivors)
+
 
 
 
