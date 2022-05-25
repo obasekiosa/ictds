@@ -187,10 +187,8 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     populations = [0] * time_steps
     for trail in range(numTrials):
         patient = Patient([SimpleVirus(maxBirthProb, clearProb) for _ in range(numViruses)], maxPop)
-        for step in range(time_steps):
-            populations[step] += patient.update()
-    for i in range(time_steps):
-        populations[i] /= numTrials 
+        for step in range(time_steps): populations[step] += patient.update()
+    for i in range(time_steps): populations[i] /= numTrials 
 
     pylab.plot(populations, label = "SimpleVirus")
     pylab.title("SimpleVirus simulation")
@@ -438,4 +436,29 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     
     """
 
-    # TODO
+    time_steps = 300
+    populations = [0] * time_steps
+    resistant_populations = [0] * time_steps
+    active_drugs = ["guttagonol"]
+    for trail in range(numTrials):
+        tmp_resistances = {k:v for k, v in resistances.items()}
+        patient = TreatedPatient([ResistantVirus(maxBirthProb, clearProb, tmp_resistances, mutProb) for _ in range(numViruses)], maxPop)
+        for step in range(time_steps):
+            if step == time_steps // 2:
+                for active_drug in active_drugs: patient.addPrescription(active_drug)
+            populations[step] += patient.update()
+            resistant_populations[step] += patient.getResistPop(active_drugs)
+    for i in range(time_steps):
+        populations[i] /= numTrials 
+        resistant_populations[i] /= numTrials 
+
+    pylab.plot(populations, label = "Virus")
+    pylab.plot(resistant_populations, label = "ResistantVirus")
+    pylab.title("ResistantVirus simulation")
+    pylab.xlabel("Time Steps")
+    pylab.ylabel("Average Virus Population")
+    pylab.legend(loc = "best")
+    pylab.show()
+
+
+# simulationWithDrug(100, 1000, 0.1, 0.05, {"guttagonol": True}, 0.005, 10)
