@@ -1,4 +1,4 @@
-# Computational Optimizations and Modelling
+# Computational Optimization and Modelling
 
 
 ### pset1
