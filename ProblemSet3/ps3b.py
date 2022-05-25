@@ -105,19 +105,21 @@ class Patient(object):
         """
 
         # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
 
     def getViruses(self):
         """
         Returns the viruses in this Patient.
         """
-        # TODO
+        return self.viruses
 
 
     def getMaxPop(self):
         """
         Returns the max population.
         """
-        # TODO
+        return self.maxPop
 
 
     def getTotalPop(self):
@@ -126,7 +128,7 @@ class Patient(object):
         returns: The total virus population (an integer)
         """
 
-        # TODO        
+        return len(self.viruses)     
 
 
     def update(self):
@@ -148,8 +150,18 @@ class Patient(object):
         integer)
         """
 
-        # TODO
+        survivors = [virus for virus in self.viruses if not virus.doesClear()]
 
+        pop_density = len(survivors) / self.maxPop
+        for virus in survivors:
+            try:
+                offspring = virus.reproduce(pop_density)
+                survivors.append(offspring)
+            except NoChildException as e:
+                continue
+        
+        self.viruses = survivors
+        return len(survivors)
 
 
 #
@@ -170,8 +182,23 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     clearProb: Maximum clearance probability (a float between 0-1)
     numTrials: number of simulation runs to execute (an integer)
     """
+    time_steps = 300
+    populations = [0] * time_steps
+    for trail in range(numTrials):
+        patient = Patient([SimpleVirus(maxBirthProb, clearProb) for _ in range(numViruses)], maxPop)
+        for step in range(time_steps):
+            populations[step] += patient.update()
+    for i in range(time_steps):
+        populations[i] /= numTrials 
 
-    # TODO
+    pylab.plot(populations, label = "SimpleVirus")
+    pylab.title("SimpleVirus simulation")
+    pylab.xlabel("Time Steps")
+    pylab.ylabel("Average Virus Population")
+    pylab.legend(loc = "best")
+    pylab.show()
+
+# simulationWithoutDrug(100, 1000, 0.1, 0.05, 10)
 
 
 
@@ -201,20 +228,22 @@ class ResistantVirus(SimpleVirus):
         the probability of the offspring acquiring or losing resistance to a drug.
         """
 
-        # TODO
+        super().__init__(maxBirthProb, clearProb)
+        self.resistances = resistances
+        self.mutProb = mutProb
 
 
     def getResistances(self):
         """
         Returns the resistances for this virus.
         """
-        # TODO
+        return self.resistances
 
     def getMutProb(self):
         """
         Returns the mutation probability for this virus.
         """
-        # TODO
+        return self.mutProb
 
     def isResistantTo(self, drug):
         """
@@ -227,9 +256,7 @@ class ResistantVirus(SimpleVirus):
         returns: True if this virus instance is resistant to the drug, False
         otherwise.
         """
-        
-        # TODO
-
+        return self.resistances.get(drug, False)
 
     def reproduce(self, popDensity, activeDrugs):
         """
