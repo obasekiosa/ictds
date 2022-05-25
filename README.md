@@ -47,11 +47,22 @@ runSimulation(
 
 
 ### pset3
-`Simulation without drugs`
+`Simulation without drug: SimpleVirus an Patient`
+
+```py
+simulationWithOutDrug(
+    numViruses = 100, 
+    maxPop = 1000, 
+    maxBirthProb = 0.1, 
+    clearProb = 0.05, 
+    numTrials = 10
+)
+```
+![Result Plot](./assets/simulation_without_drug.png)
 
 
 
-`Simulation with drugs`
+`Simulation with drug: ResistantVirus and Treated Patient`
 
 - __Virus initially gluttagonol resistant__
 ```py
@@ -62,8 +73,8 @@ simulationWithDrug(
     clearProb = 0.05, 
     resistances = {"guttagonol": True},
     mutProb = 0.005, 
-    numTrials = 1
-):
+    numTrials = 10
+)
 ```
 ![Result Plot](./assets/simulation_with_drug_initially_resistant.png)
 
