@@ -3,6 +3,8 @@
 
 ### pset3
 `Simulation with drugs`
+
+- __Virus initially gluttagonol resistant__
 ```py
 simulationWithDrug(
     numViruses = 100, 
