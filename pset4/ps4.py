@@ -142,8 +142,12 @@ def r_squared(y, estimated):
     Returns:
         a float for the R-squared error term
     """
-    # TODO
-    pass
+    
+    np_y = np.array(y)
+    np_estimated = np.array(estimated)
+
+    mean = np_y.mean()
+    return 1 - (((np_y - np_estimated) ** 2).sum() / ((np_y - mean) ** 2).sum())
 
 # Problem 3
 def evaluate_models_on_training(x, y, models):
