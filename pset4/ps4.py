@@ -130,7 +130,14 @@ def generate_models(x, y, degs):
         a list of numpy arrays, where each array is a 1-d array of coefficients
         that minimizes the squared error of the fitting polynomial
     """
-    return [np.ployfit(np.array(x), np.array(y), deg) for deg in degs]
+    return [np.polyfit(np.array(x), np.array(y), deg) for deg in degs]
+
+def generate_models(x, y, degs):
+    output = []
+    for d in degs:
+        model = np.array(np.polyfit(x, y, d))
+        output.append(model)
+    return output
 
 # Problem 2
 def r_squared(y, estimated):
@@ -171,8 +178,31 @@ def evaluate_models_on_training(x, y, models):
     Returns:
         None
     """
-    # TODO
-    pass
+    N = len(x)
+    model_estimates = []
+    for model in models:
+        model_estimate = [0] * N
+        for index in range(N):
+            xVal = x[index]
+            count = len(model) - 1
+            for coeff in model:
+                model_estimate[index] += (xVal**count) * coeff
+                count -= 1
+        model_estimates.append(model_estimate)
+
+    r_squareds = [r_squared(y, estimate) for estimate in model_estimates]
+
+    
+    for i in range(len(models)):
+        pylab.title("Evaluation of model" + "\n"
+                    + str(models[i]) + "\n" + "RSq = " + str(round(r_squareds[i], 3)))
+        pylab.xlabel("Years")
+        pylab.ylabel("Temperature Highs (Celsius)")
+        pylab.plot(x, y, "b.", label="Original", )
+        pylab.plot(x, model_estimates[i], "r-", label="Model Estimate")
+        pylab.legend(loc = "best")
+        pylab.show()
+
 
 
 ### Begining of program
@@ -191,6 +221,8 @@ evaluate_models_on_training(x, y, models)
 x1 = INTERVAL_1
 x2 = INTERVAL_2
 y = []
-# MISSING LINES
+x = x1
+for year in INTERVAL_1:
+    y.append(np.mean(raw_data.get_yearly_temp('BOSTON', year)))
 models = generate_models(x, y, [1])    
 evaluate_models_on_training(x, y, models)
