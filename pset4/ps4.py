@@ -197,6 +197,7 @@ def evaluate_models_on_training(x, y, models):
         pylab.title("Evaluation of model" + "\n"
                     + str(models[i]) + "\n" + "RSq = " + str(round(r_squareds[i], 3)))
         pylab.xlabel("Years")
+        pylab.ylim((-40, 40))
         pylab.ylabel("Temperature Highs (Celsius)")
         pylab.plot(x, y, "b.", label="Original", )
         pylab.plot(x, model_estimates[i], "r-", label="Model Estimate")

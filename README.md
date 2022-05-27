@@ -104,8 +104,14 @@ simulationWithDrug(
 
 ![Result Plot](./assets/daily_temp_estimates.png)
 
+***After Adjusting scales***
+![Result Plot](./assets/daily_temp_estimates_with_scales_changed.png)
+
 <br>
 
 `Model fitting: Average Yearly Temperature of Boston from 1961 to 2005`
 
 ![Result Plot](./assets/yearly_average_temp_estimates.png)
+
+***After Adjusting scales***
+![Result Plot](./assets/yearly_average_temp_estimates_with_scales_changed.png)
