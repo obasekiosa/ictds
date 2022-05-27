@@ -93,3 +93,19 @@ simulationWithDrug(
 ):
 ```
 ![Result Plot](./assets/simulation_with_drug_not_initially_resistant.png)
+
+<hr><br>
+
+
+
+### pset4
+
+`Model fitting: Daily Temperature of Boston on 10th of January from 1961 to 2005`
+
+![Result Plot](./assets/daily_temp_estimates.png)
+
+<br>
+
+`Model fitting: Average Yearly Temperature of Boston from 1961 to 2005`
+
+![Result Plot](./assets/yearly_average_temp_estimates.png)
